@@ -99,17 +99,10 @@ class OpenSslService
      * @throws \RuntimeException
      */
     public function deriveKey($privateKeyFilePath, $publicKeyFilePath) {
-        $command = 'openssl pkeyutl -derive -inkey '.$privateKeyFilePath.' -peerkey '.$publicKeyFilePath;
+        $command = 'openssl pkeyutl -derive -inkey '.$privateKeyFilePath.' -peerkey '.$publicKeyFilePath.' 2>&1';
+        $execOutput = shell_exec($command);
 
-        $execStatus = null;
-        $execOutput = null;
-        exec($command, $execOutput, $execStatus);
-
-        if ($execStatus !== 0) {
-            throw new \RuntimeException("Can't derive secret");
-        }
-
-        return $execOutput[0];
+        return $execOutput;
     }
 
 }
